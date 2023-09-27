@@ -1,0 +1,47 @@
+{
+	"type": "module",
+	"scripts": {
+		"start": "if [ -f main.cjs ]; then node main.cjs; else ts-node-esm src/index.ts; fi",
+		"build": "rm -rf dist && NODE_ENV=production webpack",
+		"dev": "nodemon -e js,ts,mjs,json -w src -w .env.local -x ts-node-esm src/index.ts",
+		"dev:debug": "DEBUG=1 npm run dev",
+		"migrate": "if [ -f db/migrate.cjs ]; then node db/migrate.cjs $PWD/db; else node --loader ./entry/loader.mjs src/migrate.ts $PWD/db; fi",
+		"typecheck": "tsc",
+		"lint": "eslint ./*.cjs ./.*.cjs 'src/**/*.ts'",
+		"format": "prettier -w ./*.cjs ./.*.cjs ./*.yml package.json 'src/**/*.ts'",
+		"prepare": "if which husky 2>/dev/null >/dev/null; then husky install; fi"
+	},
+	"dependencies": {
+		"@koa/router": "^12.0.0",
+		"argon2": "^0.31.1",
+		"better-sqlite3": "^8.6.0",
+		"koa": "^2.14.2",
+		"neo4j-driver": "^5.12.0"
+	},
+	"devDependencies": {
+		"@babel/preset-env": "^7.22.20",
+		"@babel/preset-typescript": "^7.23.0",
+		"@commitlint/cli": "^17.7.1",
+		"@commitlint/config-conventional": "^17.7.0",
+		"@types/better-sqlite3": "^7.6.5",
+		"@types/koa": "^2.13.9",
+		"@types/koa__router": "^12.0.1",
+		"@typescript-eslint/eslint-plugin": "^6.7.3",
+		"@typescript-eslint/parser": "^6.7.3",
+		"babel-loader": "^9.1.3",
+		"eslint": "^8.50.0",
+		"eslint-config-prettier": "^9.0.0",
+		"eslint-plugin-prettier": "^5.0.0",
+		"eslint-plugin-security": "^1.7.1",
+		"fork-ts-checker-webpack-plugin": "^8.0.0",
+		"husky": "^8.0.3",
+		"lint-staged": "^14.0.1",
+		"nodemon": "^3.0.1",
+		"prettier": "^3.0.3",
+		"prettier-plugin-organize-imports": "^3.2.3",
+		"terser-webpack-plugin": "^5.3.9",
+		"typescript": "^5.2.2",
+		"webpack": "^5.88.2",
+		"webpack-cli": "^5.1.4"
+	}
+}
