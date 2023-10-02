@@ -1,9 +1,9 @@
 {
 	"type": "module",
 	"scripts": {
-		"start": "if [ -f main.cjs ]; then node main.cjs; else ts-node-esm src/index.ts; fi",
+		"start": "if [ -f main.cjs ]; then node main.cjs; else node --loader ts-node/esm src/index.ts; fi",
 		"build": "rm -rf dist && NODE_ENV=production webpack",
-		"dev": "nodemon -e js,ts,mjs,json -w src -w .env.local -x ts-node-esm src/index.ts",
+		"dev": "nodemon -e js,ts,mjs,json -w src -w .env.local -x node --loader ts-node/esm src/index.ts",
 		"dev:debug": "DEBUG=1 npm run dev",
 		"migrate": "if [ -f db/migrate.cjs ]; then node db/migrate.cjs $PWD/db; else node --loader ./entry/loader.mjs src/migrate.ts $PWD/db; fi",
 		"typecheck": "tsc",
