@@ -8,10 +8,16 @@ router.get("/", () => {
 	// list all the city names
 })
 
-router.get("/:name", ctx => {
-	ctx.body = {
-		// recuperate city info from neo4j
-	}
+router.get("/:name", async ctx => {
+	const res = await neo4j_driver.executeQuery(
+		"MATCH (c:City {name: $name}) return properties(c) ",
+		{ name: ctx.params.name },
+	)
+
+	if (!res.records.length) return null
+
+	const city = res.records[0]
+	ctx.body = city.get(city.keys[0])
 })
 
 router.post("/:name", () => {
