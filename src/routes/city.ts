@@ -4,11 +4,23 @@ import { neo4j_driver } from "../neo4j.ts"
 const router = new KoaRouter({ prefix: "/api/city" })
 export default router
 
-router.get("/", () => {
+router.get("/", async ctx => {
 	// list all the city names
+	const res = await neo4j_driver.executeQuery("MATCH (c:City) return c.name")
+
+	if (!res.records.length) return null
+
+	const cityNames: string[] = []
+
+	for (const record of res.records) {
+		cityNames.push(record.get("c.name") as string)
+	}
+
+	ctx.body = cityNames
 })
 
 router.get("/:name", async ctx => {
+	// get an existing city
 	const res = await neo4j_driver.executeQuery(
 		"MATCH (c:City {name: $name}) return properties(c) ",
 		{ name: ctx.params.name },
