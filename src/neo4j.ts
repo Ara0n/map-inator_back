@@ -9,5 +9,4 @@ export const neo4j_driver = driver(
 	auth.basic(process.env.NEO4J_LOGIN, process.env.NEO4J_PASSWORD),
 )
 
-// console.log("neo4j")
-// console.log(await neo4j_driver.getServerInfo())
+console.log(await neo4j_driver.getServerInfo())
