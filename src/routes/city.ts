@@ -23,9 +23,23 @@ router.put("/:name", async ctx => {
 	console.log(ctx.request.body)
 	console.log(await neo4j_driver.getServerInfo())
 
+	const data = ctx.request.body as {
+		cityName: string
+		lat: number
+		lng: number
+		hasTree: boolean
+		hasCircle: boolean
+	}
+
 	const res = await neo4j_driver.executeQuery(
-		"MERGE (c:City {name: $body.cityName, lat: $body.lat, lng: $body.lng, hasTree: $body.hasTree, hasCircle: $body.hasCircle})",
-		{ body: ctx.request.body },
+		"MERGE (c:City {name: $cityName, lat: $lat, lng: $lng, hasTree: $hasTree, hasCircle: $hasCircle})",
+		{
+			cityName: data.cityName,
+			lat: data.lat,
+			lng: data.lng,
+			hasTree: data.hasTree,
+			hasCircle: data.hasCircle,
+		},
 	)
 
 	console.log(res)
